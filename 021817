@@ -1,0 +1,1871 @@
+[
+    {
+        "id": "babbd4.3ab2f43",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Interval update interval",
+        "topic": "setValue",
+        "payload": "{\"nodeid\" : 22, \"cmdclass\": 112, \"cmdidx\" : 111, \"value\" : 60}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 196.80952072143555,
+        "y": 903.7142386436462,
+        "wires": [
+            [
+                "13045ed.ab9c6a1",
+                "4dbb465e.d10228"
+            ]
+        ]
+    },
+    {
+        "id": "4fb4e151.eed9d",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Temp Calibration -1.8 ",
+        "topic": "setValue",
+        "payload": "{\"nodeid\" : 6, \"cmdclass\": 112, \"cmdidx\" : 201, \"value\" : -1.8}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 195.80952072143555,
+        "y": 864.7142386436462,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "83a47088.dded9",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Set Motion Sensivity 4",
+        "topic": "setValue",
+        "payload": "{\"nodeid\" : 22, \"cmdclass\": 112, \"cmdidx\" : 4, \"value\" : 4}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 194.80952072143555,
+        "y": 825.7142386436462,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "81c1cc5.681483",
+        "type": "zwave-out",
+        "z": "35a8abf3.f78d44",
+        "name": "ZWave Out",
+        "controller": "b9fb6c0.bdba398",
+        "x": 604.8572387695312,
+        "y": 466.7142639160156,
+        "wires": []
+    },
+    {
+        "id": "7e81993b.3fa458",
+        "type": "zwave-in",
+        "z": "35a8abf3.f78d44",
+        "name": "Zwave In",
+        "controller": "1f1ed968.891dd7",
+        "x": 891.3333587646484,
+        "y": 456.85708475112915,
+        "wires": [
+            [
+                "8a235be2.bb32b8",
+                "5ecd6c64.5fbee4"
+            ]
+        ]
+    },
+    {
+        "id": "8a235be2.bb32b8",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "true",
+        "x": 1118.6190338134766,
+        "y": 411.09518337249756,
+        "wires": []
+    },
+    {
+        "id": "9f3cc513.492b18",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/driver ready/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 138,
+        "y": 994.3332710266113,
+        "wires": [
+            [
+                "5110f6a5.19ae08"
+            ]
+        ]
+    },
+    {
+        "id": "ffde2024.299fc",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "driver ready",
+        "func": "msg.payload = 'Start sccanning '+ msg.payload.id;\nreturn msg;",
+        "outputs": 1,
+        "x": 551,
+        "y": 1005.6666145324707,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "873b5bb2.c03768",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/driver failed/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 132,
+        "y": 1052.6666145324707,
+        "wires": [
+            [
+                "fc4f32f1.f1f7"
+            ]
+        ]
+    },
+    {
+        "id": "9ab6b42f.c91558",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "driver failed",
+        "func": "msg.payload='failed to start driver';\nreturn msg;",
+        "outputs": 1,
+        "x": 559,
+        "y": 1058.99995803833,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4dbf7d8d.aa8434",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/node added/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 135,
+        "y": 1112.6666145324707,
+        "wires": [
+            [
+                "b2d0cd8e.09b78"
+            ]
+        ]
+    },
+    {
+        "id": "1de5c4e5.21d0fb",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "node added",
+        "func": "if(!context.global.zwavenodes) context.global.zwavenodes = [];\ncontext.global.zwavenodes[msg.payload.nodeid] = {\n        \t\tnodeid : msg.payload.nodeid,\n        \t\tmanufacturer: '',\n        \t\tmanufacturerid: '',\n        \t\tproduct: '',\n        \t\tproducttype: '',\n        \t\tproductid: '',\n        \t\ttype: '',\n        \t\tname: '',\n        \t\tloc: '',\n        \t\tclasses: {},\n        \t\tready: false,\n        \t    status: '',\n    \t\t};\n    \t\t\nreturn msg;",
+        "outputs": 1,
+        "x": 577,
+        "y": 1113.99995803833,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a692cb56.ccf058",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/value changed/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 135,
+        "y": 1249.6666145324707,
+        "wires": [
+            [
+                "38ffe500.2c1ddc"
+            ]
+        ]
+    },
+    {
+        "id": "763a2bad.446654",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "value changed",
+        "func": "if (context.global.zwavenodes[msg.payload.nodeid]['ready']) {\ncontext.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass][msg.payload.cmdidx] = msg.payload.currState; \n}\nreturn msg;",
+        "outputs": 1,
+        "x": 578,
+        "y": 1244.9999885559082,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2c7f46c4.8479ca",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "node ready",
+        "func": "context.global.zwavenodes[msg.payload.nodeid]['manufacturer']= msg.payload.nodeinfo.manufacturer;\ncontext.global.zwavenodes[msg.payload.nodeid]['manufacturerid'] = msg.payload.nodeinfo.manufacturerid;\ncontext.global.zwavenodes[msg.payload.nodeid]['product'] = msg.payload.nodeinfo.product;\ncontext.global.zwavenodes[msg.payload.nodeid]['producttype'] = msg.payload.nodeinfo.producttype;\ncontext.global.zwavenodes[msg.payload.nodeid]['productid'] = msg.payload.nodeinfo.productid;\ncontext.global.zwavenodes[msg.payload.nodeid]['type'] = msg.payload.nodeinfo.type;\ncontext.global.zwavenodes[msg.payload.nodeid]['name'] = msg.payload.nodeinfo.name;\ncontext.global.zwavenodes[msg.payload.nodeid]['loc'] = msg.payload.nodeinfo.loc;\ncontext.global.zwavenodes[msg.payload.nodeid]['ready'] = true;\nreturn msg;\n",
+        "outputs": 1,
+        "x": 595,
+        "y": 1367.6666450500488,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "897f15a4.135278",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/node ready/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 149,
+        "y": 1364.6666450500488,
+        "wires": [
+            [
+                "f0343e51.b1e82"
+            ]
+        ]
+    },
+    {
+        "id": "52195e7e.1ea85",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "notification",
+        "func": "context.global.zwavenodes[msg.payload.nodeid]['status']=msg.payload.notification;\nreturn msg;",
+        "outputs": 1,
+        "x": 604,
+        "y": 1414.3332710266113,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "48a3d106.1b7b5",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/notification/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 143,
+        "y": 1416.3332710266113,
+        "wires": [
+            [
+                "980b67c2.aee188"
+            ]
+        ]
+    },
+    {
+        "id": "43a3cc50.18c274",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "scan complete",
+        "func": "msg.payload=\"Scan complete\"\n\nreturn msg;",
+        "outputs": 1,
+        "x": 600,
+        "y": 1481.3332710266113,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d847a43c.69a778",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/scan complete/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 158,
+        "y": 1484.3332710266113,
+        "wires": [
+            [
+                "c44f83ba.8b888"
+            ]
+        ]
+    },
+    {
+        "id": "5110f6a5.19ae08",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 369,
+        "y": 995.3332710266113,
+        "wires": [
+            [
+                "ffde2024.299fc"
+            ]
+        ]
+    },
+    {
+        "id": "fc4f32f1.f1f7",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 370,
+        "y": 1055.3332710266113,
+        "wires": [
+            [
+                "9ab6b42f.c91558"
+            ]
+        ]
+    },
+    {
+        "id": "b2d0cd8e.09b78",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 362,
+        "y": 1115.3332710266113,
+        "wires": [
+            [
+                "1de5c4e5.21d0fb"
+            ]
+        ]
+    },
+    {
+        "id": "38ffe500.2c1ddc",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 352,
+        "y": 1250.3332710266113,
+        "wires": [
+            [
+                "763a2bad.446654"
+            ]
+        ]
+    },
+    {
+        "id": "f0343e51.b1e82",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 371,
+        "y": 1362.3332710266113,
+        "wires": [
+            [
+                "2c7f46c4.8479ca"
+            ]
+        ]
+    },
+    {
+        "id": "980b67c2.aee188",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 366,
+        "y": 1419.3332710266113,
+        "wires": [
+            [
+                "52195e7e.1ea85"
+            ]
+        ]
+    },
+    {
+        "id": "c44f83ba.8b888",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 375,
+        "y": 1488.3332710266113,
+        "wires": [
+            [
+                "43a3cc50.18c274"
+            ]
+        ]
+    },
+    {
+        "id": "9b15ac1d.fcfa",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/value added/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 138,
+        "y": 1174.3332710266113,
+        "wires": [
+            [
+                "91b42ed5.cf6c3"
+            ]
+        ]
+    },
+    {
+        "id": "dbf9f9e9.9b2768",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "value added",
+        "func": "if (!context.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass])\n     context.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass] = {};\ncontext.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass][msg.payload.cmdidx] = msg.payload.currState;\n\nreturn msg;",
+        "outputs": 1,
+        "x": 579,
+        "y": 1171.6666450500488,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "91b42ed5.cf6c3",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 366,
+        "y": 1179.999927520752,
+        "wires": [
+            [
+                "dbf9f9e9.9b2768"
+            ]
+        ]
+    },
+    {
+        "id": "55055940.faf8e8",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave/events/value removed/#",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 146,
+        "y": 1309.3332710266113,
+        "wires": [
+            [
+                "db183610.0c5468"
+            ]
+        ]
+    },
+    {
+        "id": "3313aee3.ffd2a2",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "value removed",
+        "func": "if (context.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass] &&\n    context.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass][msg.payload.cmdidx])\n        delete context.global.zwavenodes[msg.payload.nodeid]['classes'][msg.payload.cmdclass][msg.payload.cmdidx];\n\nreturn msg;",
+        "outputs": 1,
+        "x": 573,
+        "y": 1312.6666450500488,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "db183610.0c5468",
+        "type": "json",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "x": 361,
+        "y": 1309.999927520752,
+        "wires": [
+            [
+                "3313aee3.ffd2a2"
+            ]
+        ]
+    },
+    {
+        "id": "e0d5c1b9.7d01a",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 110,
+        "y": 1548.3332710266113,
+        "wires": [
+            [
+                "fcf0b80.247b948"
+            ]
+        ]
+    },
+    {
+        "id": "fcf0b80.247b948",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "delete context.global.zwavenodes",
+        "func": "delete context.global.zwavenodes;\nreturn msg;",
+        "outputs": 1,
+        "x": 365,
+        "y": 1550.3332710266113,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "733e22a.63d97dc",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 609.3333435058594,
+        "y": 1934.6666259765625,
+        "wires": []
+    },
+    {
+        "id": "f2ac409b.343eb",
+        "type": "switch",
+        "z": "35a8abf3.f78d44",
+        "name": "Temperature",
+        "property": "payload.label",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Temperature",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 120.33334350585938,
+        "y": 1675.6666259765625,
+        "wires": [
+            [
+                "84cf27a3.8b9f48",
+                "81bbae12.5024e"
+            ]
+        ]
+    },
+    {
+        "id": "84cf27a3.8b9f48",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Display Temp",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Temperature is now {{payload.value.value}}",
+        "x": 339.3333435058594,
+        "y": 1694.6666259765625,
+        "wires": [
+            [
+                "733e22a.63d97dc"
+            ]
+        ]
+    },
+    {
+        "id": "b79fc1a4.5ca4b",
+        "type": "switch",
+        "z": "35a8abf3.f78d44",
+        "name": "Humidity",
+        "property": "payload.label",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Relative Humidity",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 113.33334350585938,
+        "y": 1755.6666259765625,
+        "wires": [
+            [
+                "99957145.cb12",
+                "5e414531.82e4bc"
+            ]
+        ]
+    },
+    {
+        "id": "a4d8fd16.96928",
+        "type": "switch",
+        "z": "35a8abf3.f78d44",
+        "name": "Battery",
+        "property": "payload.label",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Battery Level",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 112.33334350585938,
+        "y": 1815.6666259765625,
+        "wires": [
+            [
+                "64150576.b7bbcc",
+                "9e7ed343.0032"
+            ]
+        ]
+    },
+    {
+        "id": "5ecd6c64.5fbee4",
+        "type": "switch",
+        "z": "35a8abf3.f78d44",
+        "name": "Luminance",
+        "property": "payload.label",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Luminance",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 1067.666763305664,
+        "y": 507.66662788391113,
+        "wires": [
+            [
+                "315cd05b.6f5e1",
+                "377b5908.695fc6"
+            ]
+        ]
+    },
+    {
+        "id": "2867e52d.83aa3a",
+        "type": "switch",
+        "z": "35a8abf3.f78d44",
+        "name": "UV",
+        "property": "payload.label",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "Ultraviolet",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 107.33334350585938,
+        "y": 1972.6666259765625,
+        "wires": [
+            [
+                "6f688b81.ccd5b4",
+                "712ebdc9.c6c154"
+            ]
+        ]
+    },
+    {
+        "id": "99957145.cb12",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Display Humidity",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Humidity is now {{payload.value.value}}",
+        "x": 352.3333435058594,
+        "y": 1775.6666259765625,
+        "wires": [
+            [
+                "733e22a.63d97dc"
+            ]
+        ]
+    },
+    {
+        "id": "315cd05b.6f5e1",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Display Lux",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Luminance is now {{payload.value.value}}",
+        "x": 1272.6667556762695,
+        "y": 539.9999599456787,
+        "wires": [
+            [
+                "4bd89223.2eda5c"
+            ]
+        ]
+    },
+    {
+        "id": "64150576.b7bbcc",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Display Battery",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "Battery is now {{payload.value.value}}",
+        "x": 341.3333435058594,
+        "y": 1850.6666259765625,
+        "wires": [
+            [
+                "733e22a.63d97dc"
+            ]
+        ]
+    },
+    {
+        "id": "6f688b81.ccd5b4",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Display UV",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "UV is now {{payload.value.value}}",
+        "x": 332.3333435058594,
+        "y": 1990.6666259765625,
+        "wires": [
+            [
+                "733e22a.63d97dc"
+            ]
+        ]
+    },
+    {
+        "id": "6fabe3.1a99041c",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/sensor.log",
+        "filename": "/tmp/sensor.log",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "x": 307.3333511352539,
+        "y": 2048.6666355133057,
+        "wires": []
+    },
+    {
+        "id": "692fe693.a6b908",
+        "type": "change",
+        "z": "35a8abf3.f78d44",
+        "name": "Timestamp",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "timestamp",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 122.3333511352539,
+        "y": 2048.6666355133057,
+        "wires": [
+            [
+                "6fabe3.1a99041c"
+            ]
+        ]
+    },
+    {
+        "id": "e494308a.6b80a",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/temperature",
+        "filename": "/tmp/temperature",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 599.3333435058594,
+        "y": 1656.6666259765625,
+        "wires": []
+    },
+    {
+        "id": "81bbae12.5024e",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Log Temp",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{timestamp}}  {{payload.value.value}}",
+        "x": 319.3333435058594,
+        "y": 1654.6666259765625,
+        "wires": [
+            [
+                "e494308a.6b80a"
+            ]
+        ]
+    },
+    {
+        "id": "5cf663b9.3f868c",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/humidity",
+        "filename": "/tmp/humidity",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 590.3333435058594,
+        "y": 1732.6666259765625,
+        "wires": []
+    },
+    {
+        "id": "5e414531.82e4bc",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Log Humidity",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{timestamp}}  {{payload.value.value}}",
+        "x": 338.3333435058594,
+        "y": 1735.6666259765625,
+        "wires": [
+            [
+                "5cf663b9.3f868c"
+            ]
+        ]
+    },
+    {
+        "id": "9e7ed343.0032",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Log Battery",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{timestamp}}  {{payload.value.value}}",
+        "x": 331.3333435058594,
+        "y": 1811.6666259765625,
+        "wires": [
+            [
+                "58c1ce57.746c"
+            ]
+        ]
+    },
+    {
+        "id": "58c1ce57.746c",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/battery",
+        "filename": "/tmp/battery",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 581.3333435058594,
+        "y": 1811.6666259765625,
+        "wires": []
+    },
+    {
+        "id": "377b5908.695fc6",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Log Lux",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{timestamp}}  {{payload.value.value}}",
+        "x": 1274.666763305664,
+        "y": 476.66650581359863,
+        "wires": [
+            [
+                "1e068cc0.c27e23",
+                "99201fff.5f26d",
+                "b3f90db3.17ce3"
+            ]
+        ]
+    },
+    {
+        "id": "8978ee99.0c2ac",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/lux",
+        "filename": "/tmp/lux",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 1738.3334331512451,
+        "y": 601.3332920074463,
+        "wires": []
+    },
+    {
+        "id": "712ebdc9.c6c154",
+        "type": "template",
+        "z": "35a8abf3.f78d44",
+        "name": "Log UV",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{timestamp}}  {{payload.value.value}}",
+        "x": 321.3333435058594,
+        "y": 1955.6666259765625,
+        "wires": [
+            [
+                "d260d7df.05d738"
+            ]
+        ]
+    },
+    {
+        "id": "d260d7df.05d738",
+        "type": "file",
+        "z": "35a8abf3.f78d44",
+        "name": "/tmp/uv",
+        "filename": "/tmp/uv",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "x": 582.3333435058594,
+        "y": 1983.6666259765625,
+        "wires": []
+    },
+    {
+        "id": "d8a7dc28.18c5e",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Turn Off",
+        "topic": "switchOff",
+        "payload": "{\"nodeid\" :10}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 309.7856750488281,
+        "y": 578.4761962890625,
+        "wires": [
+            [
+                "81c1cc5.681483",
+                "d342dd36.41e9e"
+            ]
+        ]
+    },
+    {
+        "id": "da0d23e2.1c9e5",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Turn On",
+        "topic": "switchOn",
+        "payload": "{\"nodeid\" : 10}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 315.2856140136719,
+        "y": 348.7142848968506,
+        "wires": [
+            [
+                "81c1cc5.681483"
+            ]
+        ]
+    },
+    {
+        "id": "cb6a1d26.9762",
+        "type": "bigtimer",
+        "z": "35a8abf3.f78d44",
+        "outtopic": "porch",
+        "outpayload1": "ON",
+        "outpayload2": "OFF",
+        "name": "Porch Lights",
+        "lat": "45.0941315",
+        "lon": "-93.35634049999999",
+        "starttime": 5001,
+        "endtime": "1395",
+        "startoff": 0,
+        "endoff": 0,
+        "offs": 0,
+        "outtext1": "",
+        "outtext2": "",
+        "timeout": 1440,
+        "sun": true,
+        "mon": true,
+        "tue": true,
+        "wed": true,
+        "thu": true,
+        "fri": true,
+        "sat": true,
+        "jan": true,
+        "feb": true,
+        "mar": true,
+        "apr": true,
+        "may": true,
+        "jun": true,
+        "jul": true,
+        "aug": true,
+        "sep": true,
+        "oct": true,
+        "nov": true,
+        "dec": true,
+        "day1": 0,
+        "month1": 0,
+        "day2": 0,
+        "month2": 0,
+        "day3": 0,
+        "month3": 0,
+        "day4": 0,
+        "month4": 0,
+        "day5": 0,
+        "month5": 0,
+        "d1": 0,
+        "w1": 0,
+        "d2": 0,
+        "w2": 0,
+        "d3": 0,
+        "w3": 0,
+        "d4": 0,
+        "w4": 0,
+        "d5": 0,
+        "w5": 0,
+        "suspend": false,
+        "random": false,
+        "repeat": false,
+        "atstart": true,
+        "x": 275.7857360839844,
+        "y": 165.21421718597412,
+        "wires": [
+            [
+                "35dc1285.487e9e"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "976315af.14d6c8",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "On",
+        "topic": "",
+        "payload": "on",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 81.78575134277344,
+        "y": 99.99997425079346,
+        "wires": [
+            [
+                "cb6a1d26.9762"
+            ]
+        ]
+    },
+    {
+        "id": "98584f9f.f6ff2",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Off",
+        "topic": "",
+        "payload": "off",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 76.42858123779297,
+        "y": 147.14274740219116,
+        "wires": [
+            [
+                "cb6a1d26.9762"
+            ]
+        ]
+    },
+    {
+        "id": "8bd849f0.dbaf78",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Default",
+        "topic": "",
+        "payload": "default",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 77.14286804199219,
+        "y": 195.71421813964844,
+        "wires": [
+            [
+                "cb6a1d26.9762"
+            ]
+        ]
+    },
+    {
+        "id": "35dc1285.487e9e",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "On or Off",
+        "func": "var count;\nif (msg.payload ==\"ON\"){\nreturn {topic:\"switchOn\", payload:\"{\\\"nodeid\\\":4}\"};}\nelse if (msg.payload ==\"OFF\"){\nreturn {topic:\"switchOff\", payload:\"{\\\"nodeid\\\":4}\"};\n}\nelse {\nreturn {topic:\"blank\", payload:\"boom\"};\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 453.57147216796875,
+        "y": 152.42864990234375,
+        "wires": [
+            [
+                "e53b5a72.1a3e98"
+            ]
+        ]
+    },
+    {
+        "id": "284326d2.0a09ca",
+        "type": "comment",
+        "z": "35a8abf3.f78d44",
+        "name": "Node 4: Porch Routine",
+        "info": "",
+        "x": 105,
+        "y": 57.14281368255615,
+        "wires": []
+    },
+    {
+        "id": "22dd9b76.18ab04",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Kitchen 75%",
+        "topic": "setValue",
+        "payload": "{\"nodeid\":5, \"cmdclass\":38, \"value\":75}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 1269.5,
+        "y": 160,
+        "wires": [
+            [
+                "5d8ca477.46b23c"
+            ]
+        ]
+    },
+    {
+        "id": "7ab65a54.86f544",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Kitchen 100%",
+        "topic": "setValue",
+        "payload": "{\"nodeid\":5, \"cmdclass\":38, \"value\":99}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 1269,
+        "y": 109,
+        "wires": [
+            [
+                "5d8ca477.46b23c"
+            ]
+        ]
+    },
+    {
+        "id": "91056f6a.3ad33",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Kitchen 25%",
+        "topic": "setValue",
+        "payload": "{\"nodeid\":5, \"cmdclass\":38, \"value\":25}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 1265,
+        "y": 245,
+        "wires": [
+            [
+                "5d8ca477.46b23c"
+            ]
+        ]
+    },
+    {
+        "id": "20a329e8.f9e9c6",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "setValue",
+        "topic": "setValue",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 322.5,
+        "y": 516,
+        "wires": [
+            [
+                "81c1cc5.681483",
+                "d342dd36.41e9e"
+            ]
+        ]
+    },
+    {
+        "id": "5d8ca477.46b23c",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "5) Kitchen Out",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 1532.5,
+        "y": 223,
+        "wires": []
+    },
+    {
+        "id": "d7842a27.e3d498",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "Kitchen 50%",
+        "topic": "setValue",
+        "payload": "{\"nodeid\":5, \"cmdclass\":38, \"value\":50}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 1263,
+        "y": 202,
+        "wires": [
+            [
+                "5d8ca477.46b23c"
+            ]
+        ]
+    },
+    {
+        "id": "a2f1ab0d.dee848",
+        "type": "comment",
+        "z": "35a8abf3.f78d44",
+        "name": "Node 5: Kitchen Island",
+        "info": "",
+        "x": 1271,
+        "y": 67,
+        "wires": []
+    },
+    {
+        "id": "e53b5a72.1a3e98",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "4) Porch Out",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 623.5,
+        "y": 152,
+        "wires": []
+    },
+    {
+        "id": "7d0d40b2.a9c7",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "switchOn",
+        "topic": "switchOn",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 319,
+        "y": 406,
+        "wires": [
+            [
+                "81c1cc5.681483"
+            ]
+        ]
+    },
+    {
+        "id": "ca6619a3.026fc8",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "switchOff",
+        "topic": "switchOff",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 318,
+        "y": 461,
+        "wires": [
+            [
+                "81c1cc5.681483"
+            ]
+        ]
+    },
+    {
+        "id": "ccaad4f2.e28ca8",
+        "type": "comment",
+        "z": "35a8abf3.f78d44",
+        "name": "Aeon Labs Multi Sensor 6",
+        "info": "",
+        "x": 177.5,
+        "y": 781,
+        "wires": []
+    },
+    {
+        "id": "2ed887c9.daef08",
+        "type": "ui_slider",
+        "z": "35a8abf3.f78d44",
+        "name": "6) Dinning Room",
+        "label": "Dinning Room",
+        "group": "b3dca72a.7d4f78",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "dimmer",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 1836.857177734375,
+        "y": 120.5714111328125,
+        "wires": [
+            [
+                "9a70ede3.57989"
+            ]
+        ]
+    },
+    {
+        "id": "9a70ede3.57989",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "setValue",
+        "func": "var dimmer=msg.payload;\n\nvar dimmerMSG={ \n    topic: 'setValue',\n    payload: {'nodeid':6, 'cmdclass':38, 'value': +dimmer}\n};\n\n\n/*\n\"{\"nodeid\":5, \"cmdclass\":38, \"value\":99}\"\n    payload: {\"nodeid 5 cmdclass test + dimmer\"    \n};\n*/\n\nreturn dimmerMSG;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 2019.857177734375,
+        "y": 119.5714111328125,
+        "wires": [
+            [
+                "b75e6361.7922a"
+            ]
+        ]
+    },
+    {
+        "id": "b6cea829.4ef468",
+        "type": "bigtimer",
+        "z": "35a8abf3.f78d44",
+        "outtopic": "setaeon",
+        "outpayload1": "five",
+        "outpayload2": "twohrs",
+        "name": "Set Lux Sensor Interval",
+        "lat": "45.0941315",
+        "lon": "-93.35634049999999",
+        "starttime": 5001,
+        "endtime": "5005",
+        "startoff": "60",
+        "endoff": 0,
+        "offs": 0,
+        "outtext1": "",
+        "outtext2": "",
+        "timeout": 1440,
+        "sun": true,
+        "mon": true,
+        "tue": true,
+        "wed": true,
+        "thu": true,
+        "fri": true,
+        "sat": true,
+        "jan": true,
+        "feb": true,
+        "mar": true,
+        "apr": true,
+        "may": true,
+        "jun": true,
+        "jul": true,
+        "aug": true,
+        "sep": true,
+        "oct": true,
+        "nov": true,
+        "dec": true,
+        "day1": 0,
+        "month1": 0,
+        "day2": 0,
+        "month2": 0,
+        "day3": 0,
+        "month3": 0,
+        "day4": 0,
+        "month4": 0,
+        "day5": 0,
+        "month5": 0,
+        "d1": 0,
+        "w1": 0,
+        "d2": 0,
+        "w2": 0,
+        "d3": 0,
+        "w3": 0,
+        "d4": 0,
+        "w4": 0,
+        "d5": 0,
+        "w5": 0,
+        "suspend": false,
+        "random": false,
+        "repeat": false,
+        "atstart": false,
+        "x": 439.5000114440918,
+        "y": 786.5000052452087,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b75e6361.7922a",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "6) Dinning Out",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 2190.857177734375,
+        "y": 119.5714111328125,
+        "wires": []
+    },
+    {
+        "id": "7279b522.b2c55c",
+        "type": "ui_slider",
+        "z": "35a8abf3.f78d44",
+        "name": "5) Island",
+        "label": "Kitchen Isld",
+        "group": "b3dca72a.7d4f78",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "kitchen",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 1256.5,
+        "y": 291,
+        "wires": [
+            [
+                "b8cc0c74.2d81c",
+                "bad149e4.6f9658"
+            ]
+        ]
+    },
+    {
+        "id": "655848a9.979458",
+        "type": "comment",
+        "z": "35a8abf3.f78d44",
+        "name": "Node 6: Dinning Room",
+        "info": "",
+        "x": 1844.857177734375,
+        "y": 74.5714111328125,
+        "wires": []
+    },
+    {
+        "id": "b8cc0c74.2d81c",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "setValue",
+        "func": "var kitchenisld=msg.payload;\n\n\nvar kitchenisldMSG={ \n    topic: 'setValue',\n    payload: {'nodeid':5, 'cmdclass':38, 'value': +kitchenisld}\n};\n\nreturn kitchenisldMSG;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1399,
+        "y": 292,
+        "wires": [
+            [
+                "5d8ca477.46b23c"
+            ]
+        ]
+    },
+    {
+        "id": "c026a8cd.503ec8",
+        "type": "comment",
+        "z": "35a8abf3.f78d44",
+        "name": "Node 7: Living Room",
+        "info": "",
+        "x": 1852.857177734375,
+        "y": 177.5714111328125,
+        "wires": []
+    },
+    {
+        "id": "9c0448e1.32c518",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "6) Dinning Out",
+        "topic": "",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 2197.857177734375,
+        "y": 221.5714111328125,
+        "wires": []
+    },
+    {
+        "id": "942792b.6cd237",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "setValue",
+        "func": "var dimmer=msg.payload;\n\nvar dimmerMSG={ \n    topic: 'setValue',\n    payload: {'nodeid':7, 'cmdclass':38, 'value': +dimmer}\n};\n\nreturn dimmerMSG;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 2026.857177734375,
+        "y": 221.5714111328125,
+        "wires": [
+            [
+                "9c0448e1.32c518"
+            ]
+        ]
+    },
+    {
+        "id": "dfda0c8.128a4f",
+        "type": "ui_slider",
+        "z": "35a8abf3.f78d44",
+        "name": "7) Dinning Room",
+        "label": "Living Room",
+        "group": "b3dca72a.7d4f78",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "dimmer",
+        "min": 0,
+        "max": "100",
+        "step": 1,
+        "x": 1843.857177734375,
+        "y": 222.5714111328125,
+        "wires": [
+            [
+                "942792b.6cd237"
+            ]
+        ]
+    },
+    {
+        "id": "bc8e00b.8eb0f",
+        "type": "ui_button",
+        "z": "35a8abf3.f78d44",
+        "name": "4) Porch 1",
+        "group": "a25807df.e4eb88",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Porch On",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "{\"nodeid\" : 4}",
+        "payloadType": "json",
+        "topic": "switchOn",
+        "x": 459.2857131958008,
+        "y": 194.28570556640625,
+        "wires": [
+            [
+                "e53b5a72.1a3e98"
+            ]
+        ]
+    },
+    {
+        "id": "24384465.533fac",
+        "type": "ui_button",
+        "z": "35a8abf3.f78d44",
+        "name": "4) Porch 0",
+        "group": "a25807df.e4eb88",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Porch Off",
+        "color": "",
+        "bgcolor": "",
+        "icon": "",
+        "payload": "{\"nodeid\" : 4}",
+        "payloadType": "json",
+        "topic": "switchOff",
+        "x": 460,
+        "y": 235.71429443359375,
+        "wires": [
+            [
+                "e53b5a72.1a3e98"
+            ]
+        ]
+    },
+    {
+        "id": "bad149e4.6f9658",
+        "type": "ui_gauge",
+        "z": "35a8abf3.f78d44",
+        "name": "Kitchen Isld",
+        "group": "344e1fb3.04256",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Kitchen Isld",
+        "label": "",
+        "format": "{{ value | number }}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 1433.8571243286133,
+        "y": 332.57145404815674,
+        "wires": []
+    },
+    {
+        "id": "ab60365f.0bbcd8",
+        "type": "inject",
+        "z": "35a8abf3.f78d44",
+        "name": "getNodeStatistics",
+        "topic": "getNodeStatistics",
+        "payload": "{\"args\": [22]}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 377.1428756713867,
+        "y": 667.1428890228271,
+        "wires": [
+            [
+                "81c1cc5.681483",
+                "d342dd36.41e9e"
+            ]
+        ]
+    },
+    {
+        "id": "d342dd36.41e9e",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 616.4285354614258,
+        "y": 417.14285469055176,
+        "wires": []
+    },
+    {
+        "id": "13045ed.ab9c6a1",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "22) Multisensor6",
+        "topic": "setValue",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 446.4285828726631,
+        "y": 864.5714338166373,
+        "wires": []
+    },
+    {
+        "id": "4dbb465e.d10228",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 421.5000114440918,
+        "y": 931.0000052452087,
+        "wires": []
+    },
+    {
+        "id": "1e068cc0.c27e23",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 1447.4999351501465,
+        "y": 499.99999809265137,
+        "wires": []
+    },
+    {
+        "id": "99201fff.5f26d",
+        "type": "mongodb out",
+        "z": "35a8abf3.f78d44",
+        "mongodb": "940bff07.1e8e3",
+        "name": "",
+        "collection": "Lighting",
+        "payonly": false,
+        "upsert": false,
+        "multi": false,
+        "operation": "store",
+        "x": 1470.8334350585938,
+        "y": 446.66673278808594,
+        "wires": []
+    },
+    {
+        "id": "7fe46534.deaffc",
+        "type": "mongodb in",
+        "z": "35a8abf3.f78d44",
+        "mongodb": "940bff07.1e8e3",
+        "name": "Lux Level",
+        "collection": "lighting",
+        "operation": "find",
+        "x": 1278.9286371866863,
+        "y": 594.7619107564291,
+        "wires": [
+            [
+                "b8cdb264.41b2a"
+            ]
+        ]
+    },
+    {
+        "id": "b8cdb264.41b2a",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "false",
+        "x": 1512.2619705200195,
+        "y": 591.4285774230957,
+        "wires": []
+    },
+    {
+        "id": "4bd89223.2eda5c",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1447.4999351501465,
+        "y": 540.0000019073486,
+        "wires": []
+    },
+    {
+        "id": "b3f90db3.17ce3",
+        "type": "mqtt out",
+        "z": "35a8abf3.f78d44",
+        "name": "zwave\\Luminance",
+        "topic": "zwave\\Luminance",
+        "qos": "",
+        "retain": "",
+        "broker": "35e1911a.494f1e",
+        "x": 1460.8333892822266,
+        "y": 393.3333492279053,
+        "wires": []
+    },
+    {
+        "id": "41e4d738.ff74f8",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1071.0714416503906,
+        "y": 685.9523792266846,
+        "wires": []
+    },
+    {
+        "id": "cb959c8d.c5f68",
+        "type": "mqtt in",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "topic": "zwave\\Luminance",
+        "qos": "2",
+        "broker": "35e1911a.494f1e",
+        "x": 862.4999237060547,
+        "y": 755.9523544311523,
+        "wires": [
+            [
+                "41e4d738.ff74f8",
+                "a8711f23.7fca1"
+            ]
+        ]
+    },
+    {
+        "id": "a8711f23.7fca1",
+        "type": "function",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "func": "var count;\nvar luminance = msg.payload;\nif (msg.payload >= 1){\nreturn {topic:\"zwave/Luminance\", payload:\"luminance\"};}\nelse if (msg.payload < 1){\nreturn {topic:\"zwave/Luminance\", payload:\"{\\\"nodeid\\\":4}\"};\n}\nelse {\nreturn {topic:\"blank\", payload:\"boom\"};\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1051.5475692749023,
+        "y": 773.0951919555664,
+        "wires": [
+            [
+                "7ea28663.4be008"
+            ]
+        ]
+    },
+    {
+        "id": "7ea28663.4be008",
+        "type": "debug",
+        "z": "35a8abf3.f78d44",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1211.5476913452148,
+        "y": 773.5714588165283,
+        "wires": []
+    },
+    {
+        "id": "b9fb6c0.bdba398",
+        "type": "zwave-controller",
+        "z": "35a8abf3.f78d44",
+        "port": "/dev/ttyUSB0",
+        "driverattempts": "3",
+        "pollinterval": "500"
+    },
+    {
+        "id": "1f1ed968.891dd7",
+        "type": "zwave-controller",
+        "z": "",
+        "port": "/dev/ttyACM0",
+        "driverattempts": "3",
+        "pollinterval": "10000",
+        "allowunreadyupdates": false
+    },
+    {
+        "id": "35e1911a.494f1e",
+        "type": "mqtt-broker",
+        "z": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": true,
+        "keepalive": "15",
+        "cleansession": true,
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": ""
+    },
+    {
+        "id": "b3dca72a.7d4f78",
+        "type": "ui_group",
+        "z": "",
+        "name": "Lighting Control",
+        "tab": "8425ea06.f4ab38",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "a25807df.e4eb88",
+        "type": "ui_group",
+        "z": "",
+        "name": "Porch Lighting",
+        "tab": "8425ea06.f4ab38",
+        "order": 1,
+        "disp": true,
+        "width": "3"
+    },
+    {
+        "id": "344e1fb3.04256",
+        "type": "ui_group",
+        "z": "",
+        "name": "Status",
+        "tab": "8425ea06.f4ab38",
+        "order": 3,
+        "disp": true,
+        "width": "3"
+    },
+    {
+        "id": "940bff07.1e8e3",
+        "type": "mongodb",
+        "z": "",
+        "hostname": "10.0.0.100",
+        "port": "27017",
+        "db": "Ecobee3",
+        "name": "Edgewood-01"
+    },
+    {
+        "id": "8425ea06.f4ab38",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Lighting Control",
+        "icon": "dashboard",
+        "order": 1
+    }
+]
